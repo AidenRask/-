@@ -1,0 +1,42 @@
+#include <Servo.h>
+
+Servo servo180;  // 用來敲擊
+Servo servo360;  // 用來模擬 ±90 度轉動
+
+// 可調參數
+const int rotate90Duration = 400;
+const int pauseDuration = 1000;
+const int betweenTurnsDelay = 1500;
+
+// 中立值調整（請根據你馬達實際狀況做微調）
+//const int neutral = 92;            // 原本是 90，請手動微調
+//const int speedOffset = 20;        // 控制正負方向的距離
+
+void setup() {
+  servo180.attach(9);
+  servo360.attach(10);
+
+  servo360.write(90);  // 先停止
+}
+
+void loop() {
+  // 🎯 敲擊動作（修改後）
+  servo180.write(0);       // 敲下去
+  delay(700);               // 停留一小段時間，營造「砰！」的感覺
+  servo180.write(30);        // 回彈
+  delay(300);               // 間隔（可調整敲擊頻率）
+
+  servo360.write(120);    // 順時針慢速
+  delay(rotate90Duration);
+  servo360.write(90);     // 停止
+  delay(pauseDuration);
+
+  delay(betweenTurnsDelay);
+
+  // 🎯 逆時針旋轉（360 度伺服）
+  servo360.write(60);     // 逆時針慢速
+  delay(rotate90Duration);
+  servo360.write(90);     // 停止
+  delay(pauseDuration);
+}
+
